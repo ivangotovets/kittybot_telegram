@@ -12,9 +12,14 @@ def say_hi(update, context):
 def wake_up(update, context):
     chat = update.effective_chat
     name = update.message.chat.first_name
+    buttons = ReplyKeyboardMarkup([
+        ['Определи IP', 'Который час'],
+        ['/random_digit'],
+    ])
     context.bot.send_message(
         chat_id=chat.id,
-        text='Спасибо, что включил, {}'.format(name)
+        text='Спасибо, что включил, {}'.format(name),
+        reply_markup=buttons,
     )
 
 
