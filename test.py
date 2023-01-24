@@ -1,15 +1,13 @@
-import requests
-from telegram import Bot
+import logging
 
-TOKEN = '5829159779:AAHdFKHv34HKT3f1UwnUR0xlhY0U3jRZstE'
-CHAT_ID = 244065258
-TEXT = 'Привет-привет'
-URL = 'https://api.thecatapi.com/v1/images/search'
+logging.basicConfig(
+    level=logging.INFO,
+    filemode='w',
+    filename='main.log'
+)
 
-bot = Bot(token=TOKEN)
-response = requests.get(URL).json()
-pict_url = response[0].get('url')
-
-
-bot.send_message(CHAT_ID, TEXT)
-bot.send_photo(CHAT_ID, pict_url)
+logging.debug('123')  # Когда нужна отладочная информация
+logging.info('Сообщение отправлено')  # Когда нужна дополнительная информация
+logging.warning('Большая нагрузка!')  # Когда что-то идёт не так, но работает
+logging.error('Бот не смог отправить сообщение')  # Когда что-то сломалось
+logging.critical('Всё упало! Зовите админа!1!111')  # Когда всё совсем плохо
