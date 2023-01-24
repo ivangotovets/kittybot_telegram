@@ -1,24 +1,22 @@
-from dotenv import load_dotenv
 import os
 import requests
-from telegram import ReplyKeyboardMarkup
-from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
 
-CHAT_ID = 244065258
-TEXT = 'Привет-привет'
-URL = 'https://api.thecatapi.com/v1/images/search'
+from dotenv import load_dotenv
+from telegram import ReplyKeyboardMarkup
+from telegram.ext import Updater, CommandHandler
 
 load_dotenv()
+
 token = os.getenv('TOKEN')
 
-updater = Updater(token=token)
+URL = 'https://api.thecatapi.com/v1/images/search'
 
 
 def get_new_image():
     try:
         response = requests.get(URL)
-    except Exception as e:
-        print(e)
+    except Exception as error:
+        print(error)
         new_url = 'https://api.thedogapi.com/v1/images/search'
         response = requests.get(new_url)
 
@@ -41,10 +39,18 @@ def wake_up(update, context):
         text='Привет, {}, смотри какие котаны!'.format(name),
         reply_markup=buttons,
     )
+    context.bot.send_photo(chat.id, get_new_image())
 
 
-updater.dispatcher.add_handler(CommandHandler('start', wake_up))
-updater.dispatcher.add_handler(CommandHandler('newcat', new_cat))
+def main():
+    updater = Updater(token=token)
 
-updater.start_polling()
-updater.idle()
+    updater.dispatcher.add_handler(CommandHandler('start', wake_up))
+    updater.dispatcher.add_handler(CommandHandler('newcat', new_cat))
+
+    updater.start_polling()
+    updater.idle()
+
+
+if __name__ == '__main__':
+    main()
