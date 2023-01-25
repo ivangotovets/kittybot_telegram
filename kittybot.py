@@ -5,14 +5,19 @@ import requests
 from dotenv import load_dotenv
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler
+from sys import stdout
 
 load_dotenv()
 
 secret_token = os.getenv('TOKEN')
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO,
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] %(mes≈sage)s',
+    handlers=(
+        logging.FileHandler("kittybot.log"),
+        logging.StreamHandler(stdout),
+    )
 )
 
 URL = 'https://api.thecatapi.com/v1/images/search'
